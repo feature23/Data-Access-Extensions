@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+	<metadata>
+		<id>F23.DataAccessExtensions</id>
+		<version>1.0.0.0</version>
+		<title>Data Access Extensions</title>
+		<authors>James Blair, Paul Irwin</authors>
+		<owners>feature[23]</owners>
+		<copyright>Copyright 2014-2015 feature[23]</copyright>
+		<description>A set of extension methods that make data access operations in .NET a little easier.</description>
+		<summary>A set of extension methods that make data access operations in .NET a little easier.</summary>
+		<language>en-US</language>
+		<projectUrl>https://github.com/feature23/Data-Access-Extensions</projectUrl>
+		<licenseUrl>https://raw.githubusercontent.com/feature23/Data-Access-Extensions/master/LICENSE</licenseUrl>
+		<iconUrl>https://raw.githubusercontent.com/feature23/DependencySwizzler/master/logo.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<tags>ado.net IDbConnection extension method stored procedure sproc .net</tags>
+	</metadata>
+	<files>
+		<file src="../src/F23.DataAccessExtensions/bin/release/F23.DataAccessExtensions.dll" target="lib" />
+	</files>
+</package>
