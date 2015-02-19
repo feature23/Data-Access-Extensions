@@ -37,7 +37,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public Parameter Create(string parameterName, object value)
+        public static Parameter Create(string parameterName, object value)
         {
             return new Parameter(parameterName, () => value);
         }
@@ -48,7 +48,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public Parameter Create<T>(string parameterName, T? value)
+        public static Parameter Create<T>(string parameterName, T? value)
             where T : struct
         {
             var valueFactory = value.HasValue ? (Func<object>) (() => value.Value) : (() => DBNull.Value);
@@ -62,7 +62,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="tableValues">The values for a table-valued parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public Parameter Create<T>(string parameterName, IList<T> tableValues)
+        public static Parameter Create<T>(string parameterName, IList<T> tableValues)
             where T : class
         {
             var valueFactory = CreateTableValueFactory(tableValues);
