@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace F23.DataAccessExtensions.Commands
 {
+    /// <summary>
+    /// A base class for creating custom "commands" that can operate on the results of a stored procedure execution.
+    /// </summary>
+    /// <typeparam name="TCommandResult">The type of result returned from the command.</typeparam>
     public abstract class StoredProcedureCommandBase<TCommandResult> : IStoredProcedureCommand<TCommandResult>
     {
         private readonly IDbConnection _connection;
@@ -18,6 +22,13 @@ namespace F23.DataAccessExtensions.Commands
 
         private readonly bool _useDeferredParameters;
 
+        /// <summary>
+        /// Creates a new StoredProcedureCommandBase-derived instance.
+        /// </summary>
+        /// <param name="connection">The database connection.</param>
+        /// <param name="transaction">The active database transaction, if any.</param>
+        /// <param name="storedProcedureName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">The parameters to pass to the stored procedure.</param>
         protected StoredProcedureCommandBase(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<IDbDataParameter> parameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
@@ -32,6 +43,13 @@ namespace F23.DataAccessExtensions.Commands
             _useDeferredParameters = false;
         }
 
+        /// <summary>
+        /// Creates a new StoredProcedureCommandBase-derived instance.
+        /// </summary>
+        /// <param name="connection">The database connection.</param>
+        /// <param name="transaction">The active database transaction, if any.</param>
+        /// <param name="storedProcedureName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">The parameters to pass to the stored procedure.</param>
         protected StoredProcedureCommandBase(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<DbDataParameter> parameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
@@ -46,6 +64,10 @@ namespace F23.DataAccessExtensions.Commands
             _useDeferredParameters = true;
         }
 
+        /// <summary>
+        /// Executes the command and returns the result.
+        /// </summary>
+        /// <returns>Returns the result of the stored procedure.</returns>
         public TCommandResult Execute()
         {
             bool needsToClose = false;
@@ -69,6 +91,10 @@ namespace F23.DataAccessExtensions.Commands
             }
         }
 
+        /// <summary>
+        /// Asynchronously executes the command and returns the result.
+        /// </summary>
+        /// <returns>Asynchronously returns the result of the stored procedure.</returns>
         public async Task<TCommandResult> ExecuteAsync()
         {
             bool needsToClose = false;
@@ -107,8 +133,18 @@ namespace F23.DataAccessExtensions.Commands
             }
         }
 
+        /// <summary>
+        /// Does something with the prepared IDbCommand for the stored procedure.
+        /// </summary>
+        /// <param name="dbCommand">The IDbCommand prepared for execution.</param>
+        /// <returns>Returns the result of the stored procedure.</returns>
         protected internal abstract TCommandResult ExecuteInternal(IDbCommand dbCommand);
-
+        
+        /// <summary>
+        /// Asynchronously does something with the prepared IDbCommand for the stored procedure.
+        /// </summary>
+        /// <param name="dbCommand">The IDbCommand prepared for execution.</param>
+        /// <returns>Asynchronously returns the result of the stored procedure.</returns>
         protected internal abstract Task<TCommandResult> ExecuteInternalAsync(DbCommand dbCommand);
 
         private IDbCommand PrepareDbCommand()

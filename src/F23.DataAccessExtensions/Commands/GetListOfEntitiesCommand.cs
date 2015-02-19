@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace F23.DataAccessExtensions.Commands
 {
-    public sealed class GetListOfEntitiesCommand<TEntity> : StoredProcedureCommandBase<IList<TEntity>>
+    internal sealed class GetListOfEntitiesCommand<TEntity> : StoredProcedureCommandBase<IList<TEntity>>
         where TEntity : class, new()
     {
         public GetListOfEntitiesCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<IDbDataParameter> parameters) 

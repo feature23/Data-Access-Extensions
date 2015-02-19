@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace F23.DataAccessExtensions
 {
+    /// <summary>
+    /// A helper class that makes it easier to create stored procedure parameters.
+    /// </summary>
     public class DbDataParameter
     {
         private readonly string _parameterName;
@@ -27,11 +30,23 @@ namespace F23.DataAccessExtensions
             return param;
         }
 
+        /// <summary>
+        /// Creates a new parameter with the given name and value.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="value">The value of the parameter.</param>
+        /// <returns>Returns a new parameter.</returns>
         public DbDataParameter Create(string parameterName, object value)
         {
             return new DbDataParameter(parameterName, () => value);
         }
 
+        /// <summary>
+        /// Creates a new parameter with the given name and value.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="value">The value of the parameter.</param>
+        /// <returns>Returns a new parameter.</returns>
         public DbDataParameter Create<T>(string parameterName, T? value)
             where T : struct
         {
@@ -40,6 +55,12 @@ namespace F23.DataAccessExtensions
             return new DbDataParameter(parameterName, valueFactory);
         }
 
+        /// <summary>
+        /// Creates a new parameter with the given name and value.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="tableValues">The values for a table-valued parameter.</param>
+        /// <returns>Returns a new parameter.</returns>
         public DbDataParameter Create<T>(string parameterName, IList<T> tableValues)
             where T : class
         {

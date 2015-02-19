@@ -6,26 +6,50 @@ using System.Threading.Tasks;
 
 namespace F23.DataAccessExtensions
 {
+    /// <summary>
+    /// A collection of extension methods on IDbConnection.
+    /// </summary>
     public static class DbConnectionExtensions
     {
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
             where TEntity : class, new()
         {
-            var command = new GetListOfEntitiesCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSproc<TEntity>(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
             where TEntity : class, new()
         {
-            var command = new GetListOfEntitiesCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSproc<TEntity>(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC in the given transaction and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params IDbDataParameter[] parameters)
             where TEntity : class, new()
@@ -35,6 +59,15 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC in the given transaction and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
             where TEntity : class, new()
@@ -44,24 +77,45 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
             where TEntity : class, new()
         {
-            var command = new GetListOfEntitiesCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocAsync<TEntity>(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
             where TEntity : class, new()
         {
-            var command = new GetListOfEntitiesCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocAsync<TEntity>(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
                     params IDbDataParameter[] parameters)
                     where TEntity : class, new()
@@ -71,6 +125,15 @@ namespace F23.DataAccessExtensions
             return command.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns a list of results.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
             where TEntity : class, new()
@@ -80,86 +143,164 @@ namespace F23.DataAccessExtensions
             return command.ExecuteAsync();
         }
 
-        public static IList<TEntity> ExecuteSprocSingleColumn<TEntity>(this IDbConnection connection, string sprocName,
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
+        public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocSingleColumn<TColumn>(connection, null, sprocName, parameters);
         }
 
-        public static IList<TEntity> ExecuteSprocSingleColumn<TEntity>(this IDbConnection connection, string sprocName,
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
+        public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocSingleColumn<TColumn>(connection, null, sprocName, parameters);
         }
 
-        public static IList<TEntity> ExecuteSprocSingleColumn<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
+        public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
                     params IDbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, transaction, sprocName, parameters);
+            var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
             return command.Execute();
         }
 
-        public static IList<TEntity> ExecuteSprocSingleColumn<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns a list of results.</returns>
+        public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, transaction, sprocName, parameters);
+            var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
             return command.Execute();
         }
 
-        public static Task<IList<TEntity>> ExecuteSprocSingleColumnAsync<TEntity>(this IDbConnection connection, string sprocName,
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
+        public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocSingleColumnAsync<TColumn>(connection, null, sprocName, parameters);
         }
 
-        public static Task<IList<TEntity>> ExecuteSprocSingleColumnAsync<TEntity>(this IDbConnection connection, string sprocName,
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
+        public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocSingleColumnAsync<TColumn>(connection, null, sprocName, parameters);
         }
 
-        public static Task<IList<TEntity>> ExecuteSprocSingleColumnAsync<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
+        public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, transaction, sprocName, parameters);
+            var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
             return command.ExecuteAsync();
         }
 
-        public static Task<IList<TEntity>> ExecuteSprocSingleColumnAsync<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns a list of the first column of results.
+        /// </summary>
+        /// <typeparam name="TColumn">The type of result to return.</typeparam>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns a list of results.</returns>
+        public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetSingleColumnCommand<TEntity>(connection, transaction, sprocName, parameters);
+            var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
             return command.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new NonQueryCommand(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocNonQuery(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new NonQueryCommand(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocNonQuery(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, IDbTransaction transaction, string sprocName,
                     params IDbDataParameter[] parameters)
         {
@@ -168,6 +309,14 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
@@ -176,22 +325,40 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new NonQueryCommand(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocNonQueryAsync(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new NonQueryCommand(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocNonQueryAsync(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params IDbDataParameter[] parameters)
         {
@@ -200,6 +367,14 @@ namespace F23.DataAccessExtensions
             return command.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns the number of rows affected.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
@@ -208,22 +383,40 @@ namespace F23.DataAccessExtensions
             return command.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new GetXDocumentFromScalarCommand(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocXmlScalar(connection, null, sprocName, parameters);
         }
-
+        
+        /// <summary>
+        /// Executes a stored procedure via RPC and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetXDocumentFromScalarCommand(connection, null, sprocName, parameters);
-
-            return command.Execute();
+            return ExecuteSprocXmlScalar(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params IDbDataParameter[] parameters)
         {
@@ -232,6 +425,14 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Executes a stored procedure via RPC within the given transaction and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
@@ -240,22 +441,40 @@ namespace F23.DataAccessExtensions
             return command.Execute();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, string sprocName,
             params IDbDataParameter[] parameters)
         {
-            var command = new GetXDocumentFromScalarCommand(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocXmlScalarAsync(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, string sprocName,
             params DbDataParameter[] parameters)
         {
-            var command = new GetXDocumentFromScalarCommand(connection, null, sprocName, parameters);
-
-            return command.ExecuteAsync();
+            return ExecuteSprocXmlScalarAsync(connection, null, sprocName, parameters);
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params IDbDataParameter[] parameters)
         {
@@ -264,6 +483,14 @@ namespace F23.DataAccessExtensions
             return command.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Asynchronously executes a stored procedure via RPC within the given transaction and returns the XDocument of the XML value of the first column of the first row.
+        /// </summary>
+        /// <param name="connection">The IDbConnection connection.</param>
+        /// <param name="transaction">The active IDbTransaction, or null.</param>
+        /// <param name="sprocName">The name of the stored procedure to execute.</param>
+        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
+        /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
             params DbDataParameter[] parameters)
         {
