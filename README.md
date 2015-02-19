@@ -116,3 +116,7 @@ var customers = context.GetCustomersByState("FL");
 // or:
 var customers = await conn.GetCustomersByStateAsync("FL");
 ```
+
+## License
+
+This code is licensed under the MIT license.
