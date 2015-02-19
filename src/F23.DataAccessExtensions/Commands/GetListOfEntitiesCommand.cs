@@ -13,7 +13,7 @@ namespace F23.DataAccessExtensions.Commands
         {
         }
 
-        public GetListOfEntitiesCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<DbDataParameter> parameters)
+        public GetListOfEntitiesCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
             : base(connection, transaction, storedProcedureName, parameters)
         {
         }

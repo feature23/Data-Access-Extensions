@@ -18,7 +18,7 @@ namespace F23.DataAccessExtensions.Commands
         private readonly IDbTransaction _transaction;
         private readonly string _storedProcedureName;
         private readonly IEnumerable<IDbDataParameter> _parameters;
-        private readonly IEnumerable<DbDataParameter> _deferredParameters;
+        private readonly IEnumerable<Parameter> _deferredParameters;
 
         private readonly bool _useDeferredParameters;
 
@@ -50,7 +50,7 @@ namespace F23.DataAccessExtensions.Commands
         /// <param name="transaction">The active database transaction, if any.</param>
         /// <param name="storedProcedureName">The name of the stored procedure to execute.</param>
         /// <param name="parameters">The parameters to pass to the stored procedure.</param>
-        protected StoredProcedureCommandBase(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<DbDataParameter> parameters)
+        protected StoredProcedureCommandBase(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
             if (storedProcedureName == null) throw new ArgumentNullException("storedProcedureName");
@@ -59,7 +59,7 @@ namespace F23.DataAccessExtensions.Commands
             _dbConnectionForAsync = connection as DbConnection;
             _transaction = transaction;
             _storedProcedureName = storedProcedureName;
-            _deferredParameters = parameters ?? new DbDataParameter[0];
+            _deferredParameters = parameters ?? new Parameter[0];
 
             _useDeferredParameters = true;
         }

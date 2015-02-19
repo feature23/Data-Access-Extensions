@@ -16,7 +16,7 @@ namespace F23.DataAccessExtensions.Commands
         {
         }
 
-        public GetXDocumentFromScalarCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<DbDataParameter> parameters)
+        public GetXDocumentFromScalarCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
             : base(connection, transaction, storedProcedureName, parameters)
         {
         }

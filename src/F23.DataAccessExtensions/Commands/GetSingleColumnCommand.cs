@@ -12,7 +12,7 @@ namespace F23.DataAccessExtensions.Commands
         {
         }
 
-        public GetSingleColumnCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<DbDataParameter> parameters)
+        public GetSingleColumnCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
             : base(connection, transaction, storedProcedureName, parameters)
         {
         }

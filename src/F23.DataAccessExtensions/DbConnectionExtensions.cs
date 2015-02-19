@@ -35,7 +35,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
             where TEntity : class, new()
         {
             return ExecuteSproc<TEntity>(connection, null, sprocName, parameters);
@@ -69,7 +69,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
             where TEntity : class, new()
         {
             var command = new GetListOfEntitiesCommand<TEntity>(connection, transaction, sprocName, parameters);
@@ -101,7 +101,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
             where TEntity : class, new()
         {
             return ExecuteSprocAsync<TEntity>(connection, null, sprocName, parameters);
@@ -135,7 +135,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TEntity>> ExecuteSprocAsync<TEntity>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
             where TEntity : class, new()
         {
             var command = new GetListOfEntitiesCommand<TEntity>(connection, transaction, sprocName, parameters);
@@ -166,7 +166,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns a list of results.</returns>
         public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocSingleColumn<TColumn>(connection, null, sprocName, parameters);
         }
@@ -198,7 +198,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns a list of results.</returns>
         public static IList<TColumn> ExecuteSprocSingleColumn<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
@@ -228,7 +228,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocSingleColumnAsync<TColumn>(connection, null, sprocName, parameters);
         }
@@ -260,7 +260,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns a list of results.</returns>
         public static Task<IList<TColumn>> ExecuteSprocSingleColumnAsync<TColumn>(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new GetSingleColumnCommand<TColumn>(connection, transaction, sprocName, parameters);
 
@@ -288,7 +288,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocNonQuery(connection, null, sprocName, parameters);
         }
@@ -318,7 +318,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public static int ExecuteSprocNonQuery(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new NonQueryCommand(connection, transaction, sprocName, parameters);
 
@@ -346,7 +346,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocNonQueryAsync(connection, null, sprocName, parameters);
         }
@@ -376,7 +376,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns the number of rows affected.</returns>
         public static Task<int> ExecuteSprocNonQueryAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new NonQueryCommand(connection, transaction, sprocName, parameters);
 
@@ -404,7 +404,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocXmlScalar(connection, null, sprocName, parameters);
         }
@@ -434,7 +434,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns the XDocument of the XML value of the first column of the first row.</returns>
         public static XDocument ExecuteSprocXmlScalar(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new GetXDocumentFromScalarCommand(connection, transaction, sprocName, parameters);
 
@@ -462,7 +462,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             return ExecuteSprocXmlScalarAsync(connection, null, sprocName, parameters);
         }
@@ -492,7 +492,7 @@ namespace F23.DataAccessExtensions
         /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Asynchronously returns the XDocument of the XML value of the first column of the first row.</returns>
         public static Task<XDocument> ExecuteSprocXmlScalarAsync(this IDbConnection connection, IDbTransaction transaction, string sprocName,
-            params DbDataParameter[] parameters)
+            params Parameter[] parameters)
         {
             var command = new GetXDocumentFromScalarCommand(connection, transaction, sprocName, parameters);
 

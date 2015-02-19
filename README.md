@@ -17,12 +17,12 @@ using F23.DataAccessExtensions;
 IList<Customer> customers = connection.ExecuteSproc<Customer>("GetCustomers");
 
 Customer customer = connection.ExecuteSproc<Customer>("GetCustomer", 
-    DbDataParameter.Create("@id", 123)
+    Parameter.Create("@id", 123)
   ).FirstOrDefault();
   
 IList<int> ids = connection.ExecuteSprocSingleColumn<int>("GetAllCustomerIDs");
   
-int affected = connection.ExecuteSprocNonQuery("SetCustomerInactive", DbDataParameter.Create("@id", 123));
+int affected = connection.ExecuteSprocNonQuery("SetCustomerInactive", Parameter.Create("@id", 123));
 
 XDocument xml = connection.ExecuteSprocXmlScalar("GetMenuHierarchy");
 
@@ -36,12 +36,12 @@ All methods also have Async versions that you can use with async/await:
 IList<Customer> customers = await connection.ExecuteSprocAsync<Customer>("GetCustomers");
 
 Customer customer = (await connection.ExecuteSprocAsync<Customer>("GetCustomer", 
-    DbDataParameter.Create("@id", 123)
+    Parameter.Create("@id", 123)
   )).FirstOrDefault();
   
 IList<int> ids = await connection.ExecuteSprocSingleColumnAsync<int>("GetAllCustomerIDs");
   
-int affected = await connection.ExecuteSprocNonQueryAsync("SetCustomerInactive", DbDataParameter.Create("@id", 123));
+int affected = await connection.ExecuteSprocNonQueryAsync("SetCustomerInactive", Parameter.Create("@id", 123));
 
 XDocument xml = await connection.ExecuteSprocXmlScalarAsync("GetMenuHierarchy");
 
@@ -55,12 +55,12 @@ public static class MySprocExtensions
 {
   public static Customer GetCustomer(this IDbConnection conn, int id)
   {
-    return conn.ExecuteSproc<Customer>("GetCustomer", DbDataParameter.Create("@id", id)).FirstOrDefault();
+    return conn.ExecuteSproc<Customer>("GetCustomer", Parameter.Create("@id", id)).FirstOrDefault();
   }
   
   public static async Task<Customer> GetCustomerAsync(this IDbConnection conn, int id)
   {
-    return (await conn.ExecuteSprocAsync<Customer>("GetCustomer", DbDataParameter.Create("@id", id))).FirstOrDefault();
+    return (await conn.ExecuteSprocAsync<Customer>("GetCustomer", Parameter.Create("@id", id))).FirstOrDefault();
   }
 }
 
@@ -99,12 +99,12 @@ public static class MySprocExtensions
 {
   public static IList<Customer> GetCustomersByState(this DbContext conn, string state)
   {
-    return conn.ExecuteSproc<Customer>("GetCustomersByState", DbDataParameter.Create("@state", state));
+    return conn.ExecuteSproc<Customer>("GetCustomersByState", Parameter.Create("@state", state));
   }
   
   public static Task<IList<Customer>> GetCustomersByStateAsync(this DbContext conn, string state)
   {
-    return conn.ExecuteSprocAsync<Customer>("GetCustomersByState", DbDataParameter.Create("@state", state));
+    return conn.ExecuteSprocAsync<Customer>("GetCustomersByState", Parameter.Create("@state", state));
   }
 }
 

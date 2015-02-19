@@ -9,12 +9,12 @@ namespace F23.DataAccessExtensions
     /// <summary>
     /// A helper class that makes it easier to create stored procedure parameters.
     /// </summary>
-    public class DbDataParameter
+    public class Parameter
     {
         private readonly string _parameterName;
         private readonly Func<object> _valueFactory;
 
-        private DbDataParameter(string parameterName, Func<object> valueFactory)
+        private Parameter(string parameterName, Func<object> valueFactory)
         {
             _parameterName = parameterName;
             _valueFactory = valueFactory;
@@ -37,9 +37,9 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public DbDataParameter Create(string parameterName, object value)
+        public Parameter Create(string parameterName, object value)
         {
-            return new DbDataParameter(parameterName, () => value);
+            return new Parameter(parameterName, () => value);
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public DbDataParameter Create<T>(string parameterName, T? value)
+        public Parameter Create<T>(string parameterName, T? value)
             where T : struct
         {
             var valueFactory = value.HasValue ? (Func<object>) (() => value.Value) : (() => DBNull.Value);
 
-            return new DbDataParameter(parameterName, valueFactory);
+            return new Parameter(parameterName, valueFactory);
         }
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace F23.DataAccessExtensions
         /// <param name="parameterName">The name of the parameter.</param>
         /// <param name="tableValues">The values for a table-valued parameter.</param>
         /// <returns>Returns a new parameter.</returns>
-        public DbDataParameter Create<T>(string parameterName, IList<T> tableValues)
+        public Parameter Create<T>(string parameterName, IList<T> tableValues)
             where T : class
         {
             var valueFactory = CreateTableValueFactory(tableValues);
 
-            return new DbDataParameter(parameterName, valueFactory);
+            return new Parameter(parameterName, valueFactory);
         }
 
         private static Func<object> CreateTableValueFactory<T>(IEnumerable<T> tableValues)
