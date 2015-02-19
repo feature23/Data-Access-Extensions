@@ -17,6 +17,6 @@
 		<tags>ado.net IDbConnection extension method stored procedure sproc .net</tags>
 	</metadata>
 	<files>
-		<file src="../src/F23.DataAccessExtensions/bin/release/F23.DataAccessExtensions.dll" target="lib" />
+		<file src="..\src\F23.DataAccessExtensions\bin\release\F23.DataAccessExtensions.dll" target="lib" />
 	</files>
 </package>
