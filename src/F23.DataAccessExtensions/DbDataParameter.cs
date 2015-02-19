@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace F23.DataAccessExtensions
@@ -75,11 +76,13 @@ namespace F23.DataAccessExtensions
             {
                 var dataTable = new DataTable();
                 var tableValueProperties = typeof (T)
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(i => i.CanRead)
+                    .ToArray();
 
                 foreach (var prop in tableValueProperties)
                 {
-                    dataTable.Columns.Add(prop.Name, prop.PropertyType);
+                    dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
                 }
 
                 foreach (var item in tableValues)
