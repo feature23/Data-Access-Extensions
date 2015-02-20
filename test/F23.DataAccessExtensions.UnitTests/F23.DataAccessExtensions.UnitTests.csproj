@@ -73,6 +73,7 @@
     <Compile Include="Examples\Customer.cs" />
     <Compile Include="ParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NonQueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
