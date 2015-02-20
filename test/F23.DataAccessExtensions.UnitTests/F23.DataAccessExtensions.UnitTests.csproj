@@ -71,6 +71,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Examples\Customer.cs" />
+    <Compile Include="Mocks\MockDataParameterCollection.cs" />
+    <Compile Include="Mocks\MockDbConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NonQueryTests.cs" />
