@@ -50,17 +50,9 @@ namespace F23.DataAccessExtensions.UnitTests
         public void ExecuteSprocNonQuery_GivenSprocNameAndNoParams_ShouldReturnRowsAffected()
         {
             // arrange
-            var mockConn = CreateMockConnection();
-
-            var mockCmd = CreateMockIDbCommand();
-            mockCmd.Setup(i => i.ExecuteNonQuery()).Returns(3);
-
-            var cmd = mockCmd.Object;
-            
-            mockConn.Setup(i => i.CreateCommand()).Returns(cmd);
-
-            var conn = mockConn.Object;
-            cmd.Connection = conn;
+            IDbCommand cmd;
+            IDbConnection conn;
+            SetupNonQueryConnectionAndCommand(out cmd, out conn);
 
             // act
             int affected = conn.ExecuteSprocNonQuery("Foo");
@@ -70,21 +62,14 @@ namespace F23.DataAccessExtensions.UnitTests
             Assert.AreEqual(CommandType.StoredProcedure, cmd.CommandType);
             Assert.AreEqual(3, affected);
         }
-
+        
         [Test]
         public async Task ExecuteSprocNonQueryAsync_GivenSprocNameAndNoParams_ShouldReturnRowsAffected()
         {
             // arrange
-            var conn = new MockDbConnection();
-
-            var mockCmd = CreateMockDbCommand();
-            mockCmd.Setup(i => i.ExecuteNonQueryAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(3));
-
-            var cmd = mockCmd.Object;
-
-            conn.MockCreateDbCommand = () => cmd;
-
-            cmd.Connection = conn;
+            MockDbConnection conn;
+            MockDbCommand cmd;
+            SetupAsyncNonQueryConnectionAndCommand(out conn, out cmd);
 
             // act
             int affected = await conn.ExecuteSprocNonQueryAsync("Foo");
@@ -99,21 +84,9 @@ namespace F23.DataAccessExtensions.UnitTests
         public void ExecuteSprocNonQuery_GivenSprocNameAndParams_ShouldReturnRowsAffected()
         {
             // arrange
-            var mockConn = CreateMockConnection();
-
-            var mockCmd = CreateMockIDbCommand();
-            mockCmd.Setup(i => i.ExecuteNonQuery()).Returns(3);
-            mockCmd.Setup(i => i.CreateParameter()).Returns(() =>
-            {
-                return new MockDbParameter();
-            });
-
-            var cmd = mockCmd.Object;
-
-            mockConn.Setup(i => i.CreateCommand()).Returns(cmd);
-
-            var conn = mockConn.Object;
-            cmd.Connection = conn;
+            IDbCommand cmd;
+            IDbConnection conn;
+            SetupNonQueryConnectionAndCommand(out cmd, out conn);
 
             // act
             int affected = conn.ExecuteSprocNonQuery("Foo", Parameter.Create("@bar", 123));
@@ -130,14 +103,9 @@ namespace F23.DataAccessExtensions.UnitTests
         public async Task ExecuteSprocNonQueryAsync_GivenSprocNameAndParam_ShouldReturnRowsAffected()
         {
             // arrange
-            var conn = new MockDbConnection();
-
-            var cmd = new MockDbCommand();
-            cmd.MockExecuteNonQueryAsync = c => Task.FromResult(3);
-            
-            conn.MockCreateDbCommand = () => cmd;
-
-            cmd.Connection = conn;
+            MockDbConnection conn;
+            MockDbCommand cmd;
+            SetupAsyncNonQueryConnectionAndCommand(out conn, out cmd);
 
             // act
             int affected = await conn.ExecuteSprocNonQueryAsync("Foo", Parameter.Create("@bar", 123));
@@ -148,6 +116,34 @@ namespace F23.DataAccessExtensions.UnitTests
             Assert.AreEqual(3, affected);
             Assert.AreEqual("@bar", cmd.Parameters[0].ParameterName);
             Assert.AreEqual(123, cmd.Parameters[0].Value);
+        }
+
+        private static void SetupAsyncNonQueryConnectionAndCommand(out MockDbConnection conn, out MockDbCommand cmd)
+        {
+            conn = new MockDbConnection();
+
+            cmd = new MockDbCommand();
+            cmd.MockExecuteNonQueryAsync = c => Task.FromResult(3);
+
+            DbCommand ret = cmd;
+
+            conn.MockCreateDbCommand = () => ret;
+
+            cmd.Connection = conn;
+        }
+        
+        private void SetupNonQueryConnectionAndCommand(out IDbCommand cmd, out IDbConnection conn)
+        {
+            var mockConn = CreateMockConnection();
+
+            var mockCmd = CreateMockIDbCommand();
+
+            cmd = mockCmd.Object;
+
+            mockConn.Setup(i => i.CreateCommand()).Returns(cmd);
+
+            conn = mockConn.Object;
+            cmd.Connection = conn;
         }
 
         private Mock<DbParameter> CreateMockDbParameter()
@@ -170,9 +166,15 @@ namespace F23.DataAccessExtensions.UnitTests
         {
             var cmd = new Mock<IDbCommand>();
             var collection = new MockDataParameterCollection();
+
             cmd.SetupAllProperties();
             cmd.SetupGet(i => i.Parameters).Returns(collection);
-            
+            cmd.Setup(i => i.ExecuteNonQuery()).Returns(3);
+            cmd.Setup(i => i.CreateParameter()).Returns(() =>
+            {
+                return new MockDbParameter();
+            });
+
             return cmd;
         }
 
