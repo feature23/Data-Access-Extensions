@@ -105,8 +105,7 @@ namespace F23.DataAccessExtensions.UnitTests
             mockCmd.Setup(i => i.ExecuteNonQuery()).Returns(3);
             mockCmd.Setup(i => i.CreateParameter()).Returns(() =>
             {
-                var p = CreateMockParameter();
-                return p.Object;
+                return new MockDbParameter();
             });
 
             var cmd = mockCmd.Object;
@@ -123,9 +122,43 @@ namespace F23.DataAccessExtensions.UnitTests
             Assert.AreEqual("Foo", cmd.CommandText);
             Assert.AreEqual(CommandType.StoredProcedure, cmd.CommandType);
             Assert.AreEqual(3, affected);
+            Assert.AreEqual("@bar", ((IDataParameter)cmd.Parameters[0]).ParameterName);
+            Assert.AreEqual(123, ((IDataParameter)cmd.Parameters[0]).Value);
         }
 
-        private Mock<IDbDataParameter> CreateMockParameter()
+        [Test]
+        public async Task ExecuteSprocNonQueryAsync_GivenSprocNameAndParam_ShouldReturnRowsAffected()
+        {
+            // arrange
+            var conn = new MockDbConnection();
+
+            var cmd = new MockDbCommand();
+            cmd.MockExecuteNonQueryAsync = c => Task.FromResult(3);
+            
+            conn.MockCreateDbCommand = () => cmd;
+
+            cmd.Connection = conn;
+
+            // act
+            int affected = await conn.ExecuteSprocNonQueryAsync("Foo", Parameter.Create("@bar", 123));
+
+            // assert
+            Assert.AreEqual("Foo", cmd.CommandText);
+            Assert.AreEqual(CommandType.StoredProcedure, cmd.CommandType);
+            Assert.AreEqual(3, affected);
+            Assert.AreEqual("@bar", cmd.Parameters[0].ParameterName);
+            Assert.AreEqual(123, cmd.Parameters[0].Value);
+        }
+
+        private Mock<DbParameter> CreateMockDbParameter()
+        {
+            var p = new Mock<DbParameter>();
+            p.SetupAllProperties();
+
+            return p;
+        }
+
+        private Mock<IDbDataParameter> CreateMockIDbDataParameter()
         {
             var p = new Mock<IDbDataParameter>();
             p.SetupAllProperties();

@@ -72,9 +72,13 @@
   <ItemGroup>
     <Compile Include="Examples\Customer.cs" />
     <Compile Include="Mocks\MockDataParameterCollection.cs" />
+    <Compile Include="Mocks\MockDbCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Mocks\MockDbConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Mocks\MockDbParameter.cs" />
     <Compile Include="ParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NonQueryTests.cs" />
