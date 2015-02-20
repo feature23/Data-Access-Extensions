@@ -17,7 +17,6 @@ namespace F23.DataAccessExtensions
         /// <typeparam name="TEntity">The type of result to return.</typeparam>
         /// <param name="connection">The IDbConnection connection.</param>
         /// <param name="sprocName">The name of the stored procedure to execute.</param>
-        /// <param name="parameters">Parameters to pass to the stored procedure.</param>
         /// <returns>Returns a list of results.</returns>
         public static IList<TEntity> ExecuteSproc<TEntity>(this IDbConnection connection, string sprocName)
             where TEntity : class, new()

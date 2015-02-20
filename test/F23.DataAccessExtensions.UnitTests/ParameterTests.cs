@@ -15,7 +15,7 @@ namespace F23.DataAccessExtensions.UnitTests
         {
             try
             {
-                var parm = Parameter.Create(null, (object)123);
+                Parameter.Create(null, (object)123);
             }
             catch (ArgumentNullException)
             {
@@ -30,7 +30,7 @@ namespace F23.DataAccessExtensions.UnitTests
         {
             try
             {
-                var parm = Parameter.Create(null, (int?)123);
+                Parameter.Create(null, (int?)123);
             }
             catch (ArgumentNullException)
             {
@@ -45,7 +45,7 @@ namespace F23.DataAccessExtensions.UnitTests
         {
             try
             {
-                var parm = Parameter.Create(null, new List<Customer>());
+                Parameter.Create(null, new List<Customer>());
             }
             catch (ArgumentNullException)
             {
