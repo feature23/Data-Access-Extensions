@@ -39,6 +39,9 @@ namespace F23.DataAccessExtensions
         /// <returns>Returns a new parameter.</returns>
         public static Parameter Create(string parameterName, object value)
         {
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentNullException("parameterName");
+
             return new Parameter(parameterName, () => value);
         }
 
@@ -51,6 +54,10 @@ namespace F23.DataAccessExtensions
         public static Parameter Create<T>(string parameterName, T? value)
             where T : struct
         {
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentNullException("parameterName");
+
+            // TODO.PI: in the null case, should we use null instead of DBNull.Value?
             var valueFactory = value.HasValue ? (Func<object>) (() => value.Value) : (() => DBNull.Value);
 
             return new Parameter(parameterName, valueFactory);
@@ -65,6 +72,9 @@ namespace F23.DataAccessExtensions
         public static Parameter Create<T>(string parameterName, IList<T> tableValues)
             where T : class
         {
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentNullException("parameterName");
+
             var valueFactory = CreateTableValueFactory(tableValues);
 
             return new Parameter(parameterName, valueFactory);
@@ -74,6 +84,9 @@ namespace F23.DataAccessExtensions
         {
             return () =>
             {
+                if (tableValues == null)
+                    return null;
+
                 var dataTable = new DataTable();
                 var tableValueProperties = typeof (T)
                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)

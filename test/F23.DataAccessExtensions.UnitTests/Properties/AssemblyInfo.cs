@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("F23.DataAccessExtensions")]
+[assembly: AssemblyTitle("F23.DataAccessExtensions.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("feature[23]")]
-[assembly: AssemblyProduct("F23.DataAccessExtensions")]
-[assembly: AssemblyCopyright("Copyright © feature[23] 2014-2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("F23.DataAccessExtensions.UnitTests")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f12080e3-2a4e-4887-82c0-0519b1d070ee")]
+[assembly: Guid("de61cc8e-7a0f-4952-960d-6b3fdf0da779")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,5 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("F23.DataAccessExtensions.UnitTests")]
