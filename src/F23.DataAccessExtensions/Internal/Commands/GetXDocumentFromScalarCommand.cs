@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace F23.DataAccessExtensions.Commands
+namespace F23.DataAccessExtensions.Internal.Commands
 {
     internal sealed class GetXDocumentFromScalarCommand : StoredProcedureCommandBase<XDocument>
     {

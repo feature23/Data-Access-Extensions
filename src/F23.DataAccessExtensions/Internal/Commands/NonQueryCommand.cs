@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace F23.DataAccessExtensions.Commands
+namespace F23.DataAccessExtensions.Internal.Commands
 {
     internal sealed class NonQueryCommand : StoredProcedureCommandBase<int>
     {

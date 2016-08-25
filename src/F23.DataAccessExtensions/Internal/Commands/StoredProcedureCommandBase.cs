@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace F23.DataAccessExtensions.Commands
+namespace F23.DataAccessExtensions.Internal.Commands
 {
     /// <summary>
     /// A base class for creating custom "commands" that can operate on the results of a stored procedure execution.

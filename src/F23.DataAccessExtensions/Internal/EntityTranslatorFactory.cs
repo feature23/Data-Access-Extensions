@@ -4,24 +4,24 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace F23.DataAccessExtensions
+namespace F23.DataAccessExtensions.Internal
 {
-    internal sealed class EntityFactoryFactory
+    internal sealed class EntityTranslatorFactory
     {
-        private static readonly Dictionary<Type, EntityFactory> EntityFactoryCache;
+        private static readonly Dictionary<Type, EntityTranslator> EntityFactoryCache;
 
-        static EntityFactoryFactory()
+        static EntityTranslatorFactory()
         {
-            EntityFactoryCache = new Dictionary<Type, EntityFactory>();
+            EntityFactoryCache = new Dictionary<Type, EntityTranslator>();
         }
 
-        public static EntityFactory<TEntity> CreateEntityFactory<TEntity>()
+        public static EntityTranslator<TEntity> CreateEntityFactory<TEntity>()
         {
             var type = typeof (TEntity);
 
             CacheEntityFactoryIfRequired(type);
 
-            return EntityFactoryCache[type] as EntityFactory<TEntity>;
+            return EntityFactoryCache[type] as EntityTranslator<TEntity>;
         }
 
         private static void CacheEntityFactoryIfRequired(Type type)
@@ -31,15 +31,29 @@ namespace F23.DataAccessExtensions
                 return; // already cached, so bail
             }
 
-            EntityFactoryCache[type] = CreateEntityFactoryDelegate(type);
+            EntityFactoryCache[type] = CreateEntityTranslator(type);
         }
 
-        private static EntityFactory CreateEntityFactoryDelegate(Type type)
+        private static EntityTranslator CreateEntityTranslator(Type type)
         {
             var ctor = Expression.New(type);
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(prop => prop.CanWrite);
+            
+            Type baseType = type.BaseType;
+
+            while (baseType != null && baseType != typeof(object))
+            {
+                var baseProperties = baseType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(prop => prop.CanWrite);
+
+                properties = properties
+                    .Where(p => !baseProperties.Select(bp => bp.Name).Contains(p.Name))
+                    .Concat(baseProperties);
+
+                baseType = baseType.BaseType;
+            }
 
             var pValueProvider = Expression.Parameter(typeof(DataReaderValueProvider));
 
@@ -51,7 +65,7 @@ namespace F23.DataAccessExtensions
 
             var init = Expression.MemberInit(ctor, propertySetters);
 
-            var factory = Expression.Lambda<EntityFactory>(init, pValueProvider);
+            var factory = Expression.Lambda<EntityTranslator>(init, pValueProvider);
 
             return factory.Compile();
         }
@@ -61,6 +75,9 @@ namespace F23.DataAccessExtensions
             var underlyingType = Nullable.GetUnderlyingType(type);
             var isNullable = underlyingType != null;
             var methodName = isNullable ? "GetNullableValueOrDefault" : "GetValueOrDefault";
+            //var methodName = isNullable
+            //    ? nameof(DataReaderValueProvider.GetNullableValueOrDefault)
+            //    : nameof(DataReaderValueProvider.GetValueOrDefault);
 
             var genericType = isNullable ? underlyingType : type;
 

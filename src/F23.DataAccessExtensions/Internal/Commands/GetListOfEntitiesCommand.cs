@@ -3,16 +3,17 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace F23.DataAccessExtensions.Commands
+namespace F23.DataAccessExtensions.Internal.Commands
 {
-    internal sealed class GetSingleColumnCommand<TEntity> : StoredProcedureCommandBase<IList<TEntity>>
+    internal sealed class GetListOfEntitiesCommand<TEntity> : StoredProcedureCommandBase<IList<TEntity>>
+        where TEntity : class, new()
     {
-        public GetSingleColumnCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<IDbDataParameter> parameters)
+        public GetListOfEntitiesCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<IDbDataParameter> parameters) 
             : base(connection, transaction, storedProcedureName, parameters)
         {
         }
 
-        public GetSingleColumnCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
+        public GetListOfEntitiesCommand(IDbConnection connection, IDbTransaction transaction, string storedProcedureName, IEnumerable<Parameter> parameters)
             : base(connection, transaction, storedProcedureName, parameters)
         {
         }
@@ -23,9 +24,14 @@ namespace F23.DataAccessExtensions.Commands
 
             using (var reader = dbCommand.ExecuteReader())
             {
+                var valueProvider = new DataReaderValueProvider(reader);
+
+                var objectFactory = EntityTranslatorFactory.CreateEntityFactory<TEntity>();
+
                 while (reader.Read())
                 {
-                    var item = (TEntity)reader.GetValue(0);
+                    var item = objectFactory(valueProvider);
+
                     result.Add(item);
                 }
 
@@ -35,15 +41,20 @@ namespace F23.DataAccessExtensions.Commands
             return result;
         }
 
-        protected internal async override Task<IList<TEntity>> ExecuteInternalAsync(DbCommand dbCommand)
+        protected internal override async Task<IList<TEntity>> ExecuteInternalAsync(DbCommand dbCommand)
         {
             var result = new List<TEntity>();
 
             using (var reader = await dbCommand.ExecuteReaderAsync())
             {
+                var valueProvider = new DataReaderValueProvider(reader);
+
+                var objectFactory = EntityTranslatorFactory.CreateEntityFactory<TEntity>();
+
                 while (await reader.ReadAsync())
                 {
-                    var item = (TEntity)reader.GetValue(0);
+                    var item = objectFactory(valueProvider);
+
                     result.Add(item);
                 }
 

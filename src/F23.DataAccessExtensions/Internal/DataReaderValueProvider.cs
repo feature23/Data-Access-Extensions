@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace F23.DataAccessExtensions
+namespace F23.DataAccessExtensions.Internal
 {
     internal sealed class DataReaderValueProvider
     {
@@ -11,15 +11,15 @@ namespace F23.DataAccessExtensions
         private readonly IDataReader _dataReader;
         private readonly Dictionary<string, int> _columnLookup;
 
-        public DataReaderValueProvider(IDataReader dataReader)
+        internal DataReaderValueProvider(IDataReader dataReader)
         {
-            if (dataReader == null) throw new ArgumentNullException("dataReader");
+            if (dataReader == null) throw new ArgumentNullException(nameof(dataReader));
 
             _dataReader = dataReader;
             _columnLookup = new Dictionary<string, int>();
         }
 
-        public TValue GetValueOrDefault<TValue>(string key)
+        internal TValue GetValueOrDefault<TValue>(string key)
         {
             CacheHasColumnIfRequired(key);
 
@@ -33,7 +33,7 @@ namespace F23.DataAccessExtensions
             return !_dataReader.IsDBNull(col) ? (TValue)_dataReader.GetValue(col) : default(TValue);
         }
 
-        public TValue? GetNullableValueOrDefault<TValue>(string key)
+        internal TValue? GetNullableValueOrDefault<TValue>(string key)
             where TValue : struct
         {
             CacheHasColumnIfRequired(key);

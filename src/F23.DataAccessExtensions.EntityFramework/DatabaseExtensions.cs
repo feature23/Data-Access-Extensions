@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -11,6 +13,42 @@ namespace F23.DataAccessExtensions
     /// </summary>
     public static class DatabaseExtensions
     {
+        /// <summary>
+        /// Uses SqlBulkCopy to provide a high-performance bulk insert into a SQL Server database table.
+        /// </summary>
+        /// <param name="database">The Entity Framework Database instance.</param>
+        /// <param name="tableName">The name of the destination SQL Server database table</param>
+        /// <param name="source">The items to insert</param>
+        /// <typeparam name="TEntity">The type of the items to insert</typeparam>
+        public static void BulkInsert<TEntity>(this Database database, string tableName, IEnumerable<TEntity> source)
+        {
+            var sqlConnection = database.Connection as SqlConnection;
+
+            if (sqlConnection == null)
+                throw new NotSupportedException("Bulk operations are only supported for SQL Server databases.");
+
+            sqlConnection.BulkInsert(tableName, source);
+        }
+
+        /// <summary>
+        /// Asynchronously uses SqlBulkCopy to provide a high-performance bulk insert into a SQL Server database table.
+        /// </summary>
+        /// <param name="database">The Entity Framework Database instance.</param>
+        /// <param name="tableName">The name of the destination SQL Server database table</param>
+        /// <param name="source">The items to insert</param>
+        /// <typeparam name="TEntity">The type of the items to insert</typeparam>
+        /// <returns>Asynchronously returns</returns>
+        public static async Task BulkInsertAsync<TEntity>(this Database database, string tableName,
+            IEnumerable<TEntity> source)
+        {
+            var sqlConnection = database.Connection as SqlConnection;
+
+            if (sqlConnection == null)
+                throw new NotSupportedException("Bulk operations are only supported for SQL Server databases.");
+
+            await sqlConnection.BulkInsertAsync(tableName, source);
+        }
+
         /// <summary>
         /// Executes a stored procedure via RPC and returns a list of results.
         /// </summary>
@@ -316,10 +354,7 @@ namespace F23.DataAccessExtensions
         /// <returns>Returns the underlying IDbTransaction if any, otherwise null.</returns>
         public static IDbTransaction GetUnderlyingTransaction(this Database database)
         {
-            if (database == null || database.CurrentTransaction == null)
-                return null;
-
-            return database.CurrentTransaction.UnderlyingTransaction;
+            return database?.CurrentTransaction?.UnderlyingTransaction;
         }
     }
 }

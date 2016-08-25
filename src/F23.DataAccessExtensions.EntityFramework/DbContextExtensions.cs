@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -14,6 +11,27 @@ namespace F23.DataAccessExtensions
     /// </summary>
     public static class DbContextExtensions
     {
+        /// <summary>
+        /// Uses SqlBulkCopy to provide a high-performance bulk insert into a SQL Server database table.
+        /// </summary>
+        /// <param name="context">The Entity Framework context.</param>
+        /// <param name="tableName">The name of the destination SQL Server database table</param>
+        /// <param name="source">The items to insert</param>
+        /// <typeparam name="TEntity">The type of the items to insert</typeparam>
+        public static void BulkInsert<TEntity>(this DbContext context, string tableName, IEnumerable<TEntity> source)
+             => context.Database.BulkInsert(tableName, source);
+
+        /// <summary>
+        /// Asynchronously uses SqlBulkCopy to provide a high-performance bulk insert into a SQL Server database table.
+        /// </summary>
+        /// <param name="context">The Entity Framework context.</param>
+        /// <param name="tableName">The name of the destination SQL Server database table</param>
+        /// <param name="source">The items to insert</param>
+        /// <typeparam name="TEntity">The type of the items to insert</typeparam>
+        /// <returns>Asynchronously returns</returns>
+        public static async Task BulkInsertAsync<TEntity>(this DbContext context, string tableName, IEnumerable<TEntity> source)
+            => await context.Database.BulkInsertAsync(tableName, source);
+
         /// <summary>
         /// Executes a stored procedure via RPC and returns a list of results.
         /// </summary>

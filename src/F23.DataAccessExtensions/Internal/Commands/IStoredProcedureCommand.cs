@@ -1,4 +1,4 @@
-﻿namespace F23.DataAccessExtensions.Commands
+﻿namespace F23.DataAccessExtensions.Internal.Commands
 {
     internal interface IStoredProcedureCommand<out TCommandResult>
     {

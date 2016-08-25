@@ -41,18 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\GetListOfEntitiesCommand.cs" />
-    <Compile Include="Commands\GetSingleColumnCommand.cs" />
-    <Compile Include="Commands\GetXDocumentFromScalarCommand.cs" />
-    <Compile Include="Commands\NonQueryCommand.cs" />
-    <Compile Include="DataReaderValueProvider.cs" />
+    <Compile Include="Internal\Commands\GetListOfEntitiesCommand.cs" />
+    <Compile Include="Internal\Commands\GetSingleColumnCommand.cs" />
+    <Compile Include="Internal\Commands\GetXDocumentFromScalarCommand.cs" />
+    <Compile Include="Internal\Commands\NonQueryCommand.cs" />
+    <Compile Include="Internal\DataReaderValueProvider.cs" />
+    <Compile Include="Internal\EntityTranslator`1.cs" />
+    <Compile Include="Internal\EnumerableDataTableExtensions.cs" />
     <Compile Include="DbConnectionExtensions.cs" />
-    <Compile Include="Commands\IStoredProcedureCommand.cs" />
-    <Compile Include="EntityFactory.cs" />
-    <Compile Include="EntityFactoryFactory.cs" />
+    <Compile Include="Internal\Commands\IStoredProcedureCommand.cs" />
+    <Compile Include="Internal\EntityTranslator.cs" />
+    <Compile Include="Internal\EntityTranslatorFactory.cs" />
+    <Compile Include="Internal\ObjectShredder`1.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Commands\StoredProcedureCommandBase.cs" />
+    <Compile Include="Internal\Commands\StoredProcedureCommandBase.cs" />
+    <Compile Include="SqlConnectionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

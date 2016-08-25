@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Xml.Linq;
-using F23.DataAccessExtensions.Commands;
 using System.Threading.Tasks;
+using F23.DataAccessExtensions.Internal.Commands;
 
 namespace F23.DataAccessExtensions
 {

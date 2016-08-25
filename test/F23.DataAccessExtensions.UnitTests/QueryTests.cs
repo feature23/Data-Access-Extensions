@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using F23.DataAccessExtensions.UnitTests.Mocks;
@@ -6,32 +8,32 @@ using Xunit;
 
 namespace F23.DataAccessExtensions.UnitTests
 {
-    public class NonQueryTests : DbConnectionTestBase
+    public class QueryTests : DbConnectionTestBase
     {
         [Fact]
-        public void ExecuteSprocNonQuery_GivenNullConnection_ShouldThrow()
+        public void ExecuteSproc_GivenNullConnection_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() => 
             {
                 IDbConnection conn = null;
 
-                conn.ExecuteSprocNonQuery("Foo");
+                conn.ExecuteSproc<object>("Foo");
             });
         }
 
         [Fact]
-        public void ExecuteSprocNonQuery_GivenNullSprocName_ShouldThrow()
+        public void ExecuteSproc_GivenNullSprocName_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 IDbConnection conn = CreateMockConnection().Object;
 
-                conn.ExecuteSprocNonQuery(null);
+                conn.ExecuteSproc<object>(null);
             });
         }
 
         [Fact]
-        public void ExecuteSprocNonQuery_GivenSprocNameAndNoParams_ShouldReturnRowsAffected()
+        public void ExecuteSproc_GivenSprocNameAndNoParams_ShouldReturnResultList()
         {
             // arrange
             IDbCommand cmd;
@@ -39,16 +41,17 @@ namespace F23.DataAccessExtensions.UnitTests
             SetupNonQueryConnectionAndCommand(out cmd, out conn);
 
             // act
-            int affected = conn.ExecuteSprocNonQuery("Foo");
+            IList<object> resultList = conn.ExecuteSproc<object>("Foo");
 
             // assert
             Assert.Equal("Foo", cmd.CommandText);
             Assert.Equal(CommandType.StoredProcedure, cmd.CommandType);
-            Assert.Equal(3, affected);
+            Assert.NotNull(resultList);
+            //Assert.Equal(3, affected);
         }
 
         [Fact]
-        public async Task ExecuteSprocNonQueryAsync_GivenSprocNameAndNoParams_ShouldReturnRowsAffected()
+        public async Task ExecuteSprocAsync_GivenSprocNameAndNoParams_ShouldReturnResultList()
         {
             // arrange
             MockDbConnection conn;
@@ -56,16 +59,17 @@ namespace F23.DataAccessExtensions.UnitTests
             SetupAsyncNonQueryConnectionAndCommand(out conn, out cmd);
 
             // act
-            int affected = await conn.ExecuteSprocNonQueryAsync("Foo");
+            IList<object> resultList = await conn.ExecuteSprocAsync<object>("Foo");
 
             // assert
             Assert.Equal("Foo", cmd.CommandText);
             Assert.Equal(CommandType.StoredProcedure, cmd.CommandType);
-            Assert.Equal(3, affected);
+            Assert.NotNull(resultList);
+            //Assert.Equal(3, affected);
         }
 
         [Fact]
-        public void ExecuteSprocNonQuery_GivenSprocNameAndParams_ShouldReturnRowsAffected()
+        public void ExecuteSproc_GivenSprocNameAndParams_ShouldReturnResultList()
         {
             // arrange
             IDbCommand cmd;
@@ -73,18 +77,19 @@ namespace F23.DataAccessExtensions.UnitTests
             SetupNonQueryConnectionAndCommand(out cmd, out conn);
 
             // act
-            int affected = conn.ExecuteSprocNonQuery("Foo", Parameter.Create("@bar", 123));
+            IList<object> resultList = conn.ExecuteSproc<object>("Foo", Parameter.Create("@bar", 123));
 
             // assert
             Assert.Equal("Foo", cmd.CommandText);
             Assert.Equal(CommandType.StoredProcedure, cmd.CommandType);
-            Assert.Equal(3, affected);
+            Assert.NotNull(resultList);
+            //Assert.Equal(3, affected);
             Assert.Equal("@bar", ((IDataParameter)cmd.Parameters[0]).ParameterName);
             Assert.Equal(123, ((IDataParameter)cmd.Parameters[0]).Value);
         }
 
         [Fact]
-        public async Task ExecuteSprocNonQueryAsync_GivenSprocNameAndParam_ShouldReturnRowsAffected()
+        public async Task ExecuteSprocAsync_GivenSprocNameAndParam_ShouldReturnResultList()
         {
             // arrange
             MockDbConnection conn;
@@ -92,12 +97,13 @@ namespace F23.DataAccessExtensions.UnitTests
             SetupAsyncNonQueryConnectionAndCommand(out conn, out cmd);
 
             // act
-            int affected = await conn.ExecuteSprocNonQueryAsync("Foo", Parameter.Create("@bar", 123));
+            IList<object> resultList = await conn.ExecuteSprocAsync<object>("Foo", Parameter.Create("@bar", 123));
 
             // assert
             Assert.Equal("Foo", cmd.CommandText);
             Assert.Equal(CommandType.StoredProcedure, cmd.CommandType);
-            Assert.Equal(3, affected);
+            Assert.NotNull(resultList);
+            //Assert.Equal(3, affected);
             Assert.Equal("@bar", cmd.Parameters[0].ParameterName);
             Assert.Equal(123, cmd.Parameters[0].Value);
         }
