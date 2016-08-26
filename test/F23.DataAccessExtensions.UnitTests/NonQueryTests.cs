@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
 using System.Threading.Tasks;
 using F23.DataAccessExtensions.UnitTests.Mocks;
 using Xunit;
@@ -100,6 +101,36 @@ namespace F23.DataAccessExtensions.UnitTests
             Assert.Equal(3, affected);
             Assert.Equal("@bar", cmd.Parameters[0].ParameterName);
             Assert.Equal(123, cmd.Parameters[0].Value);
+        }
+
+        private static void SetupAsyncNonQueryConnectionAndCommand(out MockDbConnection conn, out MockDbCommand cmd)
+        {
+            conn = new MockDbConnection();
+
+            cmd = new MockDbCommand
+            {
+                MockExecuteNonQueryAsync = c => Task.FromResult(3)
+            };
+
+            DbCommand ret = cmd;
+
+            conn.MockCreateDbCommand = () => ret;
+
+            cmd.Connection = conn;
+        }
+
+        private void SetupNonQueryConnectionAndCommand(out IDbCommand cmd, out IDbConnection conn)
+        {
+            var mockConn = CreateMockConnection();
+
+            var mockCmd = CreateMockIDbCommand();
+
+            cmd = mockCmd.Object;
+
+            mockConn.Setup(i => i.CreateCommand()).Returns(cmd);
+
+            conn = mockConn.Object;
+            cmd.Connection = conn;
         }
     }
 }

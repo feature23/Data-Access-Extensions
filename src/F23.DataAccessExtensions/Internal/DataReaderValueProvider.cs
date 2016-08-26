@@ -56,7 +56,7 @@ namespace F23.DataAccessExtensions.Internal
             }
 
             try
-            {
+            {   
                 _columnLookup[key] = _dataReader.GetOrdinal(key);
             }
             catch (IndexOutOfRangeException)

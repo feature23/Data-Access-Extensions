@@ -27,20 +27,5 @@ namespace F23.DataAccessExtensions.UnitTests
 
             Assert.True(dataTable.Rows.Count == 10);
         }
-
-        private class ShreddableObject
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public DateTime CreatedAt { get; set; }
-            public DateTime? ModifiedAt { get; set; }
-        }
-
-        private static class RandomHelper
-        {
-            private static readonly Random Random = new Random();
-
-            public static bool NextBool() => Random.Next() % 2 == 0;
-        }
     }
 }

@@ -69,6 +69,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BulkOperationTests.cs" />
     <Compile Include="DbConnectionTestBase.cs" />
     <Compile Include="Examples\Customer.cs" />
     <Compile Include="Mocks\MockDataParameterCollection.cs" />
@@ -84,6 +85,8 @@
     <Compile Include="NonQueryTests.cs" />
     <Compile Include="ObjectShredderTests.cs" />
     <Compile Include="QueryTests.cs" />
+    <Compile Include="RandomHelper.cs" />
+    <Compile Include="ShreddableObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

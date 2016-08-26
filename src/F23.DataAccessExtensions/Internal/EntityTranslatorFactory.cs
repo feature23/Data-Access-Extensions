@@ -45,7 +45,8 @@ namespace F23.DataAccessExtensions.Internal
 
             while (baseType != null && baseType != typeof(object))
             {
-                var baseProperties = baseType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                var baseProperties = baseType
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(prop => prop.CanWrite);
 
                 properties = properties
@@ -73,16 +74,17 @@ namespace F23.DataAccessExtensions.Internal
         private static MethodInfo MakeReaderMethod(Type type)
         {
             var underlyingType = Nullable.GetUnderlyingType(type);
+
             var isNullable = underlyingType != null;
-            var methodName = isNullable ? "GetNullableValueOrDefault" : "GetValueOrDefault";
-            //var methodName = isNullable
-            //    ? nameof(DataReaderValueProvider.GetNullableValueOrDefault)
-            //    : nameof(DataReaderValueProvider.GetValueOrDefault);
+
+            var methodName = isNullable
+                ? nameof(DataReaderValueProvider.GetNullableValueOrDefault)
+                : nameof(DataReaderValueProvider.GetValueOrDefault);
 
             var genericType = isNullable ? underlyingType : type;
 
             return typeof (DataReaderValueProvider)
-                .GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance)
+                .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance)
                 .MakeGenericMethod(genericType);
         }
     }
